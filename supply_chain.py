@@ -85,3 +85,30 @@ class SupplyChainGUI(QMainWindow):
         self.warehouse_input = self.create_input_field("Number of Warehouses:", input_layout)
         self.store_input = self.create_input_field("Number of Stores:", input_layout)
         main_layout.addLayout(input_layout)
+def optimize(self):
+        try:
+            num_factories = int(self.factory_input.text())
+            num_warehouses = int(self.warehouse_input.text())
+            num_stores = int(self.store_input.text())
+
+            factory_capacities = self.get_table_data(self.factory_capacities_table)
+            warehouse_to_store_demand = self.get_table_data(self.store_demands_table)
+            factory_to_warehouse_cost = self.get_table_data(self.factory_to_warehouse_cost_table)
+            warehouse_to_store_cost = self.get_table_data(self.warehouse_to_store_cost_table)
+
+            # Ensure factory_capacities and warehouse_to_store_demand are 1D lists
+            if isinstance(factory_capacities[0], list):
+                factory_capacities = [row[0] for row in factory_capacities]
+            if isinstance(warehouse_to_store_demand[0], list):
+                warehouse_to_store_demand = [row[0] for row in warehouse_to_store_demand]
+
+# Tables for input data
+        self.factory_capacities_table = self.create_table("Factory Capacities")
+        self.store_demands_table = self.create_table("Store Demands")
+        self.factory_to_warehouse_cost_table = self.create_table("Factory to Warehouse Cost")
+        self.warehouse_to_store_cost_table = self.create_table("Warehouse to Store Cost")
+
+        main_layout.addWidget(self.factory_capacities_table)
+        main_layout.addWidget(self.store_demands_table)
+        main_layout.addWidget(self.factory_to_warehouse_cost_table)
+        main_layout.addWidget(self.warehouse_to_store_cost_table)
