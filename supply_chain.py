@@ -112,3 +112,24 @@ def optimize(self):
         main_layout.addWidget(self.store_demands_table)
         main_layout.addWidget(self.factory_to_warehouse_cost_table)
         main_layout.addWidget(self.warehouse_to_store_cost_table)
+
+         # Display results
+            results = "Optimal Transportation Plan:\n\n"
+            results += "From factories to warehouses:\n"
+            for i in range(num_factories):
+                for j in range(num_warehouses):
+                    results += f"x[{i+1}][{j+1}] = {value(x[i][j])}\n"
+
+            results += "\nFrom warehouses to stores:\n"
+            for j in range(num_warehouses):
+                for k in range(num_stores):
+                    results += f"y[{j+1}][{k+1}] = {value(y[j][k])}\n"
+
+            results += f"\nMinimum Total Cost: {value(prob.objective)}"
+
+            self.results_display.setText(results)
+
+        except Exception as e:
+            QMessageBox.warning(self, "Optimization Error", f"An error occurred during optimization: {str(e)}")
+
+
