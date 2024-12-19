@@ -25,3 +25,7 @@ class SupplyChainGUI(QMainWindow):
         optimize_button.clicked.connect(self.optimize)
         main_layout.addWidget(optimize_button)
          
+        # Results display
+        self.results_display = QTextEdit()
+        self.results_display.setReadOnly(True)
+        main_layout.addWidget(self.results_display)
