@@ -41,3 +41,47 @@ class SupplyChainGUI(QMainWindow):
                 row_data.append(int(item.text()) if item else 0)
             data.append(row_data)
         return data
+ 
+ def create_input_field(self, label_text, layout):
+        label = QLabel(label_text)
+        input_field = QLineEdit()
+        layout.addWidget(label)
+        layout.addWidget(input_field)
+        return input_field
+
+    def create_table(self, title):
+        table = QTableWidget()
+        table.setHorizontalHeaderLabels([title])
+        return table
+
+    def generate_tables(self):
+        try:
+            num_factories = int(self.factory_input.text())
+            num_warehouses = int(self.warehouse_input.text())
+            num_stores = int(self.store_input.text())
+
+            self.setup_table(self.factory_capacities_table, num_factories, 1)
+            self.setup_table(self.store_demands_table, num_stores, 1)
+            self.setup_table(self.factory_to_warehouse_cost_table, num_factories, num_warehouses)
+            self.setup_table(self.warehouse_to_store_cost_table, num_warehouses, num_stores)
+        except ValueError:
+            QMessageBox.warning(self, "Input Error", "Please enter valid numbers for factories, warehouses, and stores.")
+
+    def setup_table(self, table, rows, cols):
+        table.setRowCount(rows)
+        table.setColumnCount(cols)
+        for i in range(rows):
+            for j in range(cols):
+                table.setItem(i, j, QTableWidgetItem("0"))def setup_table(self, table, rows, cols):
+        table.setRowCount(rows)
+        table.setColumnCount(cols)
+        for i in range(rows):
+            for j in range(cols):
+                table.setItem(i, j, QTableWidgetItem("0"))
+
+# Input fields for number of factories, warehouses, and stores
+        input_layout = QHBoxLayout()
+        self.factory_input = self.create_input_field("Number of Factories:", input_layout)
+        self.warehouse_input = self.create_input_field("Number of Warehouses:", input_layout)
+        self.store_input = self.create_input_field("Number of Stores:", input_layout)
+        main_layout.addLayout(input_layout)
