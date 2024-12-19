@@ -29,3 +29,15 @@ class SupplyChainGUI(QMainWindow):
         self.results_display = QTextEdit()
         self.results_display.setReadOnly(True)
         main_layout.addWidget(self.results_display)
+
+        def get_table_data(self, table):
+        rows = table.rowCount()
+        cols = table.columnCount()
+        data = []
+        for i in range(rows):
+            row_data = []
+            for j in range(cols):
+                item = table.item(i, j)
+                row_data.append(int(item.text()) if item else 0)
+            data.append(row_data)
+        return data
