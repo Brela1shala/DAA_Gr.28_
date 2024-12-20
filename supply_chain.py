@@ -131,5 +131,23 @@ def optimize(self):
 
         except Exception as e:
             QMessageBox.warning(self, "Optimization Error", f"An error occurred during optimization: {str(e)}")
+        # Variables
+            x = [[LpVariable(f"x_{i}_{j}", lowBound=0) for j in range(num_warehouses)] for i in range(num_factories)]
+            y = [[LpVariable(f"y_{j}_{k}", lowBound=0) for k in range(num_stores)] for j in range(num_warehouses)]
+
+            # Problem definition
+            prob = LpProblem("SupplyChainOptimization", LpMinimize)
+
+            # Objective function
+            total_cost = (
+                lpSum(factory_to_warehouse_cost[i][j] * x[i][j]
+                      for i in range(num_factories)
+                      for j in range(num_warehouses))
+                + lpSum(warehouse_to_store_cost[j][k] * y[j][k]
+                        for j in range(num_warehouses)
+                        for k in range(num_stores))
+            )
+            prob += total_cost
+
 
 
