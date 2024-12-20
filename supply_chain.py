@@ -148,6 +148,26 @@ def optimize(self):
                         for k in range(num_stores))
             )
             prob += total_cost
+# Constraints
+            for i in range(num_factories):
+                prob += lpSum(x[i][j] for j in range(num_warehouses)) <= factory_capacities[i], f"FactoryCapacity_{i}"
+
+            for j in range(num_warehouses):
+                prob += lpSum(x[i][j] for i in range(num_factories)) == lpSum(y[j][k] for k in range(num_stores)), f"WarehouseBalance_{j}"
+
+            for k in range(num_stores):
+                prob += lpSum(y[j][k] for j in range(num_warehouses)) == warehouse_to_store_demand[k], f"StoreDemand_{k}"
+
+            # Solve the problem
+            prob.solve()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = SupplyChainGUI()
+    window.show()
+    sys.exit(app.exec())
+
+
 
 
 
