@@ -15,19 +15,19 @@ class SupplyChainGUI(QMainWindow):
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
 
-        # Input fields for number of factories, warehouses, and stores
+       # Fushat e hyrjes për numrin e fabrikave, depove dhe dyqaneve
         input_layout = QHBoxLayout()
         self.factory_input = self.create_input_field("Number of Factories:", input_layout)
         self.warehouse_input = self.create_input_field("Number of Warehouses:", input_layout)
         self.store_input = self.create_input_field("Number of Stores:", input_layout)
         main_layout.addLayout(input_layout)
 
-        # Button to generate tables
+        # Butoni për të gjeneruar tabela
         generate_button = QPushButton("Generate Tables")
         generate_button.clicked.connect(self.generate_tables)
         main_layout.addWidget(generate_button)
 
-        # Tables for input data
+        # Tabelat për të dhënat hyrëse
         self.factory_capacities_table = self.create_table("Factory Capacities")
         self.store_demands_table = self.create_table("Store Demands")
         self.factory_to_warehouse_cost_table = self.create_table("Factory to Warehouse Cost")
@@ -38,12 +38,12 @@ class SupplyChainGUI(QMainWindow):
         main_layout.addWidget(self.factory_to_warehouse_cost_table)
         main_layout.addWidget(self.warehouse_to_store_cost_table)
 
-        # Optimize button
+        # Butoni i optimizmit
         optimize_button = QPushButton("Optimize")
         optimize_button.clicked.connect(self.optimize)
         main_layout.addWidget(optimize_button)
 
-        # Results display
+        # Shfaqja e rezultateve
         self.results_display = QTextEdit()
         self.results_display.setReadOnly(True)
         main_layout.addWidget(self.results_display)
@@ -103,20 +103,20 @@ class SupplyChainGUI(QMainWindow):
             factory_to_warehouse_cost = self.get_table_data(self.factory_to_warehouse_cost_table)
             warehouse_to_store_cost = self.get_table_data(self.warehouse_to_store_cost_table)
 
-            # Ensure factory_capacities and warehouse_to_store_demand are 1D lists
+            # Sigurohuni që kapacitetet_fabrika dhe depoja_për_magazinim_kërkesa janë lista 1D
             if isinstance(factory_capacities[0], list):
                 factory_capacities = [row[0] for row in factory_capacities]
             if isinstance(warehouse_to_store_demand[0], list):
                 warehouse_to_store_demand = [row[0] for row in warehouse_to_store_demand]
 
-            # Variables
+            # Variablat
             x = [[LpVariable(f"x_{i}_{j}", lowBound=0) for j in range(num_warehouses)] for i in range(num_factories)]
             y = [[LpVariable(f"y_{j}_{k}", lowBound=0) for k in range(num_stores)] for j in range(num_warehouses)]
 
-            # Problem definition
+            # Përkufizimi i problemit
             prob = LpProblem("SupplyChainOptimization", LpMinimize)
 
-            # Objective function
+            # Funksioni objektiv
             total_cost = (
                 lpSum(factory_to_warehouse_cost[i][j] * x[i][j]
                       for i in range(num_factories)
@@ -127,7 +127,7 @@ class SupplyChainGUI(QMainWindow):
             )
             prob += total_cost
 
-            # Constraints
+            # Kufizime
             for i in range(num_factories):
                 prob += lpSum(x[i][j] for j in range(num_warehouses)) <= factory_capacities[i], f"FactoryCapacity_{i}"
 
@@ -137,10 +137,10 @@ class SupplyChainGUI(QMainWindow):
             for k in range(num_stores):
                 prob += lpSum(y[j][k] for j in range(num_warehouses)) == warehouse_to_store_demand[k], f"StoreDemand_{k}"
 
-            # Solve the problem
+            # Zgjidheni problemin
             prob.solve()
 
-            # Display results
+            # Shfaq rezultatet
             results = "Optimal Transportation Plan:\n\n"
             results += "From factories to warehouses:\n"
             for i in range(num_factories):
