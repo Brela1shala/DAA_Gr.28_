@@ -1,6 +1,6 @@
-University of Prishtina "Hasan Prishtina"
+🛸 🌎　°　🌓　°•　🚀 ✯ *　°　🛰 　°·　🪐•　° ★　• ☄ 
+University of Prishtina " Hasan Prishtina '
 Faculty of Electrical and Computer Engineering
-
 Project Title: Supply Chain Optimization Using Linear Programming
 
 Contributors:
